@@ -1,0 +1,8 @@
+Nombre: Manzana
+Precio: 10.0
+Cantidad disponible: 5
+
+Nombre: tomate
+Precio: 10000.0
+Cantidad disponible: 4
+
