@@ -89,7 +89,7 @@ def guardar_datos():
 def cargar_datos():
     # Lógica para cargar los datos desde un archivo
     try:
-        with open("producto.txt", 'r') as f:
+        with open("productos.txt", 'r') as f:
             contenido = f.read().strip().split('\n\n')  # Leer el contenido y separar por productos
             for producto_str in contenido:
                 lineas = producto_str.strip().split('\n')
@@ -105,6 +105,7 @@ def cargar_datos():
 
 def menu():
     while True:
+        cargar_datos()
         print("1: Añadir producto")
         print("2: Ver productos")
         print("3: Actualizar producto")
@@ -126,3 +127,5 @@ def menu():
             break
         else:
             print("Por favor, selecciona una opción válida.")
+
+menu()
