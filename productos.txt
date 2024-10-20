@@ -1,4 +1,4 @@
 Nombre: Manzana
-Precio: 5.0
-Cantidad disponible: 20
+Precio: 10.0
+Cantidad disponible: 5
 

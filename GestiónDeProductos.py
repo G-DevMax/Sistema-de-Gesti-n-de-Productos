@@ -34,11 +34,15 @@ def añadir_producto():
 
 def ver_productos():
     # Lógica para ver todos los productos
-    print("Lista de Productos")
-    productos_file = open("productos.txt", "r")
-    print(productos_file.read())
-    productos_file.close()
-    pass
+    try:
+        print("Lista de Productos")
+        productos_file = open("productos.txt", "r")
+        print(productos_file.read())
+        productos_file.close()
+        pass
+    except Exception as e:
+        print(f"Error al intentar ver los productos: {e}")
+
 
 def actualizar_producto():
     # Lógica para actualizar un producto
@@ -51,6 +55,7 @@ def actualizar_producto():
             print("Ingrese la nueva cantidad disponible del producto")
             producto["cantidad"] = int(input())
             print("Producto Actualizado")
+            break
         else:
             print("Producto no encontrado")
     pass
@@ -61,7 +66,7 @@ def eliminar_producto():
     nombreProductoE = input()
     encontrado = False  # variable para confirmar si se encontro el producto
 
-    for producto in productos[:]:  # con[:] se itera sobre una copia
+    for producto in productos:
         if producto["nombre_Producto"] == nombreProductoE:
             productos.remove(producto) 
             print(f"Producto Eliminado: {producto}")  # Mostrar información del producto eliminado, para confirmar si se elimino todos los datos
@@ -70,6 +75,8 @@ def eliminar_producto():
 
     if not encontrado: # si no se encuentra el producto, se imprime el mensaje
         print("Producto no encontrado")
+    else:
+        guardar_datos()
 
 
 def guardar_datos():
@@ -77,9 +84,13 @@ def guardar_datos():
     try:
         with open("productos.txt", 'w') as file:
             for producto in productos:
-                file.write(f"Nombre: {producto['nombre_Producto']}\n")
-                file.write(f"Precio: {producto['precio']}\n")
-                file.write(f"Cantidad disponible: {producto['cantidad']}\n\n")
+                # Validar que el producto tenga las claves necesarias
+                if 'nombre_Producto' in producto and 'precio' in producto and 'cantidad' in producto:
+                    file.write(f"Nombre: {producto['nombre_Producto']}\n")
+                    file.write(f"Precio: {producto['precio']}\n")
+                    file.write(f"Cantidad disponible: {producto['cantidad']}\n\n")
+                else:
+                    print(f"Error: Producto incompleto {producto}")
         print(f"Productos guardados correctamente en productos.txt")
     except Exception as e:
         print(f"Error al guardar productos: {e}")
@@ -97,15 +108,18 @@ def cargar_datos():
                     nombre = lineas[0].split(': ')[1]
                     precio = float(lineas[1].split(': ')[1])
                     cantidad = int(lineas[2].split(': ')[1])
-                    productos.append({'nombre': nombre, 'precio': precio, 'cantidad': cantidad})
+                    if productos == productos:
+                        break
+                    else:
+                        productos.append({'nombre_Producto': nombre, 'precio': precio, 'cantidad': cantidad})
         print(f"Productos cargados correctamente desde productos.txt")
     except Exception as e:
         print(f"Error al cargar productos: {e}")
     pass
 
 def menu():
+    cargar_datos()
     while True:
-        cargar_datos()
         print("1: Añadir producto")
         print("2: Ver productos")
         print("3: Actualizar producto")
